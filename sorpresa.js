@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function() {
         overlay.style.justifyContent = 'center';
         overlay.style.zIndex = 999999;
         overlay.innerHTML = `
-            <div style="color:#fff; font-size:2.5rem; font-family:'Arial Black',Arial,sans-serif; text-align:center; margin-bottom:2rem;">
+            <div id="felicidades-capture" style="color:#fff; font-size:2.5rem; font-family:'Arial Black',Arial,sans-serif; text-align:center; margin-bottom:2rem; background:rgba(0,0,0,0.0);padding:2rem 1rem;border-radius:2rem;">
                 ¡Felicidades!<br><span style="font-size:2rem; display:block; margin-top:1rem;">${premio}</span>
             </div>
             <div style="margin-top:2rem;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
@@ -53,14 +53,49 @@ window.addEventListener('DOMContentLoaded', function() {
         `;
         document.body.appendChild(overlay);
 
-        // Compartir por WhatsApp
-        document.getElementById('share-whatsapp').onclick = function() {
-            const url = window.location.origin + window.location.pathname;
-            const text = `¡Mira el regalo que gané en mi cumpleaños! ${premio} 🎁\n${url}`;
-            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        // Compartir por WhatsApp como imagen
+        document.getElementById('share-whatsapp').onclick = async function() {
+            const felicidadesDiv = document.getElementById('felicidades-capture');
+            if (!window.html2canvas) {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
+                script.onload = () => compartirComoImagen(felicidadesDiv);
+                document.body.appendChild(script);
+            } else {
+                compartirComoImagen(felicidadesDiv);
+            }
         };
 
-        // Copiar enlace
+        async function compartirComoImagen(element) {
+            // Captura el div como imagen
+            const canvas = await window.html2canvas(element, {backgroundColor: null});
+            canvas.toBlob(async function(blob) {
+                if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'felicidades.png', {type: blob.type})] })) {
+                    // Usa la Web Share API si está disponible
+                    const file = new File([blob], 'felicidades.png', {type: blob.type});
+                    try {
+                        await navigator.share({
+                            files: [file],
+                            title: '¡Mira el regalo que gané!',
+                            text: '¡Mira el regalo que gané en mi cumpleaños! 🎁'
+                        });
+                    } catch (e) {
+                        alert('No se pudo compartir la imagen.');
+                    }
+                } else {
+                    // Si no está disponible, descarga la imagen
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'felicidades.png';
+                    a.click();
+                    setTimeout(() => URL.revokeObjectURL(url), 1000);
+                    alert('Imagen descargada. Puedes compartirla manualmente por WhatsApp.');
+                }
+            });
+        }
+
+        // Copiar enlace (opcional, igual que antes)
         document.getElementById('share-copy').onclick = function() {
             const url = window.location.origin + window.location.pathname;
             const text = `¡Mira el regalo que gané en mi cumpleaños! ${premio} 🎁\n${url}`;
