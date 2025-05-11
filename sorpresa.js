@@ -39,71 +39,195 @@ window.addEventListener('DOMContentLoaded', function() {
         overlay.style.justifyContent = 'center';
         overlay.style.zIndex = 999999;
         overlay.innerHTML = `
-            <div id="felicidades-capture" style="color:#fff; font-size:2.5rem; font-family:'Arial Black',Arial,sans-serif; text-align:center; margin-bottom:2rem; background:rgba(0,0,0,0.0);padding:2rem 1rem;border-radius:2rem;">
+            <div id="felicidades-capture" style="color:#fff; font-size:2.5rem; font-family:'Arial Black',Arial,sans-serif; text-align:center; margin-bottom:2rem; background:rgba(0,0,0,0.0);padding:2rem 1rem;border-radius:2rem; position:relative;">
                 ¡Felicidades!<br><span style="font-size:2rem; display:block; margin-top:1rem;">${premio}</span>
             </div>
             <div style="margin-top:2rem;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
                 <button id="share-whatsapp" class="sorpresa-share-btn">
-                    <span>Compartir WhatsApp</span>
-                </button>
-                <button id="share-copy" class="sorpresa-share-btn">
-                    Copiar enlace
+                    <span>Compartir por WhatsApp</span>
                 </button>
             </div>
         `;
         document.body.appendChild(overlay);
 
-        // Compartir por WhatsApp como imagen
         document.getElementById('share-whatsapp').onclick = async function() {
-            const felicidadesDiv = document.getElementById('felicidades-capture');
-            if (!window.html2canvas) {
-                const script = document.createElement('script');
-                script.src = 'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js';
-                script.onload = () => compartirComoImagen(felicidadesDiv);
-                document.body.appendChild(script);
-            } else {
-                compartirComoImagen(felicidadesDiv);
-            }
+            crearValeYCompartir(premio);
         };
 
-        async function compartirComoImagen(element) {
-            // Captura el div como imagen
-            const canvas = await window.html2canvas(element, {backgroundColor: null});
+        async function crearValeYCompartir(premio) {
+            const width = 720, height = 1280;
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+
+            // Fondo degradado oscuro
+            const grad = ctx.createLinearGradient(0, 0, width, height);
+            grad.addColorStop(0, "#1a1a2e");
+            grad.addColorStop(1, "#23234b");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            // Capa negra translúcida para contraste
+            ctx.save();
+            ctx.globalAlpha = 0.35;
+            ctx.fillStyle = "#000";
+            ctx.fillRect(0, 0, width, height);
+            ctx.restore();
+
+            // Marco blanco tipo vale
+            ctx.save();
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = 10;
+            ctx.shadowColor = "#000";
+            ctx.shadowBlur = 12;
+            ctx.strokeRect(48, 48, width - 96, height - 96);
+            ctx.restore();
+
+            // Confeti más pequeño y menos denso
+            const colors = ['#ff8800', '#e52e71', '#4a90e2', '#fff700', '#00ffb3', '#ff4a4a'];
+            for (let i = 0; i < 60; i++) {
+                ctx.save();
+                ctx.beginPath();
+                const x = 60 + Math.random() * (width - 120);
+                const y = 60 + Math.random() * (height - 120);
+                const r = 5 + Math.random() * 7;
+                ctx.arc(x, y, r, 0, 2 * Math.PI);
+                ctx.fillStyle = colors[Math.floor(Math.random() * colors.length)];
+                ctx.globalAlpha = 0.5 + Math.random() * 0.4;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // Panel central semitransparente para el contenido
+            ctx.save();
+            ctx.globalAlpha = 0.80;
+            ctx.fillStyle = "#181828";
+            ctx.fillRect(90, 220, width - 180, height - 440);
+            ctx.restore();
+
+            // Título "VALE DE REGALO"
+            ctx.save();
+            ctx.font = "bold 54px 'Arial Black', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+            ctx.shadowColor = "#000";
+            ctx.shadowBlur = 8;
+            ctx.fillStyle = "#fff";
+            ctx.fillText("VALE DE REGALO", width / 2, 120);
+            ctx.restore();
+
+            // Línea decorativa punteada
+            ctx.save();
+            ctx.strokeStyle = "#fff";
+            ctx.lineWidth = 2;
+            ctx.setLineDash([14, 10]);
+            ctx.beginPath();
+            ctx.moveTo(160, 190);
+            ctx.lineTo(width - 160, 190);
+            ctx.stroke();
+            ctx.restore();
+
+            // Emoji decorativo arriba
+            ctx.save();
+            ctx.font = "48px Arial";
+            ctx.globalAlpha = 0.95;
+            ctx.textAlign = "center";
+            ctx.fillText("🎉🎈", width / 2, 200);
+            ctx.restore();
+
+            // Premio destacado, GRANDE y centrado en el panel
+            ctx.save();
+            ctx.font = "bold 56px 'Arial Black', Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.shadowColor = "#000";
+            ctx.shadowBlur = 10;
+            ctx.fillStyle = "#fff";
+            // Ajusta tamaño si es muy largo
+            let premioFont = 56;
+            while (ctx.measureText(premio).width > width - 220 && premioFont > 32) {
+                premioFont -= 2;
+                ctx.font = `bold ${premioFont}px 'Arial Black', Arial, sans-serif`;
+            }
+            ctx.fillText(premio, width / 2, height / 2 - 80);
+            ctx.restore();
+
+            // Instrucciones centradas debajo del premio
+            ctx.save();
+            ctx.font = "24px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "top";
+            ctx.shadowColor = "#000";
+            ctx.shadowBlur = 2;
+            ctx.fillStyle = "#fff";
+            ctx.fillText("Presenta este vale a la persona que te lo envió", width / 2, height / 2 + 10);
+            ctx.fillText("y reclama tu regalo especial 🎁", width / 2, height / 2 + 44);
+            ctx.restore();
+
+            // Emoji decorativo abajo del panel
+            ctx.save();
+            ctx.font = "44px Arial";
+            ctx.globalAlpha = 0.9;
+            ctx.textAlign = "center";
+            ctx.fillText("🎂🥳", width / 2, height - 260);
+            ctx.restore();
+
+            // Fecha actual, alineada a la derecha abajo
+            const hoy = new Date();
+            const fechaStr = hoy.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+
+            ctx.save();
+            ctx.font = "bold 24px Arial, sans-serif";
+            ctx.textAlign = "right";
+            ctx.textBaseline = "bottom";
+            ctx.shadowColor = "#000";
+            ctx.shadowBlur = 2;
+            ctx.fillStyle = "#fff";
+            ctx.fillText(`Fecha: ${fechaStr}`, width - 80, height - 80);
+            ctx.restore();
+
+            // Pie de página centrado (más arriba)
+            ctx.save();
+            ctx.font = "bold 28px Arial, sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "bottom";
+            ctx.shadowColor = "#000";
+            ctx.shadowBlur = 3;
+            ctx.fillStyle = "#fff";
+            ctx.fillText("¡Feliz cumpleaños! 🎊", width / 2, height - 160); // antes: height - 100
+            ctx.restore();
+
+            // Compartir imagen
             canvas.toBlob(async function(blob) {
-                if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'felicidades.png', {type: blob.type})] })) {
-                    // Usa la Web Share API si está disponible
-                    const file = new File([blob], 'felicidades.png', {type: blob.type});
+                if (navigator.canShare && navigator.canShare({ files: [new File([blob], 'vale-cumple.png', {type: blob.type})] })) {
+                    const file = new File([blob], 'vale-cumple.png', {type: blob.type});
                     try {
                         await navigator.share({
                             files: [file],
-                            title: '¡Mira el regalo que gané!',
-                            text: '¡Mira el regalo que gané en mi cumpleaños! 🎁'
+                            title: '¡Mira el vale que gané!',
+                            text: '¡Tengo un vale de regalo de cumpleaños! 🎁'
                         });
                     } catch (e) {
                         alert('No se pudo compartir la imagen.');
                     }
                 } else {
-                    // Si no está disponible, descarga la imagen
                     const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'felicidades.png';
-                    a.click();
-                    setTimeout(() => URL.revokeObjectURL(url), 1000);
-                    alert('Imagen descargada. Puedes compartirla manualmente por WhatsApp.');
+                    const whatsappMsg = encodeURIComponent(
+                        `¡Tengo un vale de regalo de cumpleaños! 🎁\n${premio}\n\nDescarga la imagen adjunta y compártela en tu estado o chat de WhatsApp:\n${url}`
+                    );
+                    window.open(`https://wa.me/?text=${whatsappMsg}`, '_blank');
+                    setTimeout(() => URL.revokeObjectURL(url), 10000);
                 }
-            });
+            }, 'image/png');
         }
 
-        // Copiar enlace (opcional, igual que antes)
-        document.getElementById('share-copy').onclick = function() {
-            const url = window.location.origin + window.location.pathname;
-            const text = `¡Mira el regalo que gané en mi cumpleaños! ${premio} 🎁\n${url}`;
-            navigator.clipboard.writeText(text).then(() => {
-                this.textContent = "¡Copiado!";
-                setTimeout(() => { this.textContent = "Copiar enlace"; }, 1500);
-            });
-        };
+        // Cambia el texto del botón
+        overlay.querySelector('#share-whatsapp span').textContent = "Reclama tu premio a esa persona";
     }
 
     for (let i = 0; i < 6; i++) {
