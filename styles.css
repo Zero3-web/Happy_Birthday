@@ -1,0 +1,149 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100vw;
+    min-height: 100vh;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    object-fit: cover;
+}
+
+.centered-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    text-align: center;
+}
+
+.centered-text h1 {
+    font-size: 7rem;
+    font-family: 'Arial Black', Arial, sans-serif;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Botón con borde animado degradado */
+.gradient-border-btn {
+    position: relative;
+    display: inline-block;
+    padding: 1rem 3rem;
+    font-size: 2rem;
+    font-family: 'Arial Black', Arial, sans-serif;
+    color: white;
+    background: #222;
+    border: none;
+    border-radius: 2.5rem;
+    cursor: pointer;
+    z-index: 1;
+    overflow: hidden;
+    margin-top: 8rem;
+    border: 2px solid white;
+}
+
+.gradient-border-btn::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    z-index: -1;
+    background: linear-gradient(270deg, #000000, #b22357, #0e3158, #000000);
+    background-size: 600% 600%;
+    border-radius: 3rem;
+    animation: borderLoop 3s linear infinite;
+}
+
+@keyframes borderLoop {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+#loader {
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: #000000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    pointer-events: all;
+    transition: opacity 1s cubic-bezier(.4,2,.6,1);
+}
+
+body.loading .bg-video,
+body.loading .centered-text {
+    filter: blur(12px) brightness(0.7);
+    transition: filter 0.8s cubic-bezier(.4,2,.6,1);
+    pointer-events: none;
+    user-select: none;
+}
+
+body:not(.loading) .bg-video,
+body:not(.loading) .centered-text {
+    filter: none;
+    transition: filter 0.8s cubic-bezier(.4,2,.6,1);
+}
+
+.spinner {
+    width: 90px;
+    height: 90px;
+    border: 6px solid #ff8800;
+    border-top: 6px solid #e52e71;
+    border-right: 6px solid #4a90e2;
+    border-bottom: 6px solid #ff8800;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1.5rem;
+}
+
+.loading-text {
+    color: #fff;
+    font-size: 1.5rem;
+    font-family: 'Arial Black', Arial, sans-serif;
+    letter-spacing: 2px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg);}
+    100% { transform: rotate(360deg);}
+}
+
+.carino-text {
+    color: #e52e71;
+    font-size: 4rem;
+    font-family: 'Arial Black', Arial, sans-serif;
+    margin-top: 1.5rem;
+    letter-spacing: 2px;
+    opacity: 1;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+
+#transition-overlay {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, #ff8800, #e52e71, #4a90e2);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 99999;
+    transition: opacity 0.7s cubic-bezier(.4,2,.6,1);
+}

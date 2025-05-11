@@ -1,0 +1,223 @@
+
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', Arial, sans-serif;
+    overflow: hidden	;
+}
+
+
+.sorpresa-container {
+    border-radius: 2rem;
+    padding: 3rem 2rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 90vw;
+    position: relative;
+    overflow: hidden;
+    min-width: 320px;
+    min-height: 320px;
+    width: 98vw;
+    height: 98vh;
+    min-width: 0;
+    min-height: 0;
+    max-width: none;
+    max-height: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sorpresa-title {
+    font-size: 3rem;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+}
+
+.sorpresa-msg {
+    font-size: 1.5rem;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+}
+
+.scratch-message {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#scratch-canvas {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: pointer;
+    border-radius: 2rem;
+    background: transparent;
+}
+
+.scratch-instruccion {
+    margin-top: 10rem;
+    font-size: 1.2rem;
+    color: #fff;
+    background: rgba(0,0,0,0.4);
+    padding: 0.7rem 1.5rem;
+    border-radius: 1rem;
+    display: inline-block;
+    z-index: 3;
+    position: relative;
+}
+
+.scratch-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 2vw;
+    width: 90vw;
+    height: 60vw;
+    max-width: 900px;
+    max-height: 600px;
+    min-width: 320px;
+    min-height: 220px;
+    margin: 0 auto 2rem auto;
+    position: relative;
+    z-index: 1;
+}
+
+@media (max-width: 500px) {
+    .scratch-grid {
+        width: 95vw;
+        height: 55vw;
+        min-width: 210px;
+        min-height: 120px;
+        max-width: 98vw;
+        max-height: 60vw;
+    }
+}
+
+@media (max-width: 900px) {
+    .sorpresa-container {
+        width: 100vw;
+        height: 100vh;
+        padding: 0.5rem;
+    }
+    .scratch-grid {
+        width: 98vw;
+        height: 65vw;
+        min-width: 0;
+        min-height: 0;
+        max-width: none;
+        max-height: none;
+        gap: 3vw;
+    }
+}
+
+@media (max-width: 600px) {
+    .sorpresa-container {
+        width: 100vw;
+        height: 100vh;
+        padding: 0.2rem;
+    }
+    .scratch-grid {
+        width: 99vw;
+        height: 80vw;
+        gap: 3vw;
+    }
+}
+
+.scratch-cell {
+    position: relative;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+    font-size: 2vw;
+}
+
+.scratch-cell .cell-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2vw;
+    font-family: 'Arial Black', Arial, sans-serif;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    z-index: 1;
+    pointer-events: none;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.scratch-cell canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    border-radius: 1rem;
+    background: transparent;
+    pointer-events: auto;
+}
+
+.scratch-instruccion {
+    margin-top: -1rem;
+    font-size: 1.2rem;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+    padding: 0.7rem 1.5rem;
+    border-radius: 1rem;
+    display: inline-block;
+    z-index: 3;
+    position: relative;
+}
+
+.sorpresa-share-btn {
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 1.5rem;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, #ff8800, #e52e71, #4a90e2);
+    background-size: 200% 200%;
+    transition: background-position 0.5s, box-shadow 0.2s;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    margin: 0 0.5rem;
+    border: 2px solid white;
+}
+
+.sorpresa-share-btn:hover {
+    background-position: 100% 0;
+    box-shadow: 0 4px 24px rgba(229,46,113,0.18);
+}
