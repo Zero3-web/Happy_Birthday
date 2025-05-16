@@ -1,17 +1,17 @@
-window.addEventListener('DOMContentLoaded', function() {
+window.addEventListener('DOMContentLoaded', function() { //seguidores
     const premios = [
-        "Un abrazo gigante 🤗",
+        "Una cena 🤗",
         "Un deseo especial ✨",
         "Un día de suerte 🍀",
         "Un dulce favorito 🍬",
-        "Un momento inolvidable 💖",
-        "¡Un año increíble! 🎉"
+        "Una Pc gamer 💖",
+        "Un abrazo 🎉"
     ];
 
     const grid = document.getElementById('scratch-grid');
     if (!grid) return;
 
-    // Asigna aleatoriamente los premios a las 6 casillas
+    // Esto Asigna aleatoriamente los premios a las 6 casillas
     const premiosShuffle = premios.slice().sort(() => Math.random() - 0.5);
 
     let terminado = false;
@@ -39,8 +39,8 @@ window.addEventListener('DOMContentLoaded', function() {
         overlay.style.justifyContent = 'center';
         overlay.style.zIndex = 999999;
         overlay.innerHTML = `
-            <div id="felicidades-capture" style="color:#fff; font-size:2.5rem; font-family:'Arial Black',Arial,sans-serif; text-align:center; margin-bottom:2rem; background:rgba(0,0,0,0.0);padding:2rem 1rem;border-radius:2rem; position:relative;">
-                ¡Felicidades!<br><span style="font-size:2rem; display:block; margin-top:1rem;">${premio}</span>
+            <div id="felicidades-capture" style="color:#fff; font-size:4rem; font-family:'Arial Black',Arial,sans-serif; text-align:center; margin-bottom:2rem; background:rgba(0,0,0,0.0);padding:2rem 1rem;border-radius:2rem; position:relative;">
+                ¡Felicidades , Ganaste!<br><span style="font-size:4rem; display:block; margin-top:1rem;">${premio}</span>
             </div>
             <div style="margin-top:2rem;display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center;">
                 <button id="share-whatsapp" class="sorpresa-share-btn">
@@ -84,7 +84,7 @@ window.addEventListener('DOMContentLoaded', function() {
             ctx.strokeRect(48, 48, width - 96, height - 96);
             ctx.restore();
 
-            // Confeti más pequeño y menos denso
+            // Confeti 
             const colors = ['#ff8800', '#e52e71', '#4a90e2', '#fff700', '#00ffb3', '#ff4a4a'];
             for (let i = 0; i < 60; i++) {
                 ctx.save();
@@ -263,7 +263,7 @@ window.addEventListener('DOMContentLoaded', function() {
         function drawCover() {
             ctx.globalCompositeOperation = 'source-over';
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#bdbdbd';
+            ctx.fillStyle = '#ddd';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Ajusta el tamaño de fuente para que no se salga y centra vertical y horizontalmente
@@ -328,7 +328,6 @@ window.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => canvas.style.display = 'none', 700);
                 lanzarConfeti();
                 setTimeout(() => mostrarFelicitacion(content.textContent), 700);
-                // Deshabilita todos los canvas
                 document.querySelectorAll('.scratch-cell canvas').forEach(c => {
                     c.style.pointerEvents = 'none';
                 });

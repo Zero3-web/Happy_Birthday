@@ -54,6 +54,10 @@ body, html {
     overflow: hidden;
     margin-top: 8rem;
     border: 2px solid white;
+    transition: 
+        box-shadow 0.3s cubic-bezier(.4,2,.6,1),
+        transform 0.18s cubic-bezier(.4,2,.6,1),
+        color 0.3s;
 }
 
 .gradient-border-btn::before {
@@ -70,6 +74,44 @@ body, html {
 @keyframes borderLoop {
     0% { background-position: 0% 50%; }
     100% { background-position: 100% 50%; }
+}
+
+.gradient-border-btn:hover, .gradient-border-btn:focus {
+    box-shadow: 0 0 32px 8px #e52e71, 0 2px 24px 0 #ff8800a0;
+    transform: scale(1.07) rotate(-1deg);
+    color: #fff;
+    background: linear-gradient(90deg, #ff8800 0%, #e52e71 50%, #4a90e2 100%);
+    background-size: 200% 200%;
+    animation: btnShine 1.1s linear 1;
+    letter-spacing: 2px;
+}
+
+@keyframes btnShine {
+    0% {
+        filter: brightness(1) drop-shadow(0 0 0px #fff);
+    }
+    40% {
+        filter: brightness(1.3) drop-shadow(0 0 12px #fff);
+    }
+    60% {
+        filter: brightness(1.1) drop-shadow(0 0 24px #fff);
+    }
+    100% {
+        filter: brightness(1) drop-shadow(0 0 0px #fff);
+    }
+}
+
+/* Opcional: animar letras individualmente en hover */
+.gradient-border-btn:hover span {
+    display: inline-block;
+    animation: btnLetterPop 0.5s cubic-bezier(.4,2,.6,1);
+}
+
+@keyframes btnLetterPop {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.25) rotate(-6deg);}
+    60% { transform: scale(0.95) rotate(3deg);}
+    100% { transform: scale(1);}
 }
 
 #loader {
@@ -126,7 +168,7 @@ body:not(.loading) .centered-text {
 
 .carino-text {
     color: #e52e71;
-    font-size: 4rem;
+    font-size: 3rem;
     font-family: 'Arial Black', Arial, sans-serif;
     margin-top: 1.5rem;
     letter-spacing: 2px;
