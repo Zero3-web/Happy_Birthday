@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function() { //seguidores
-    const premios = [
+    const premios = [ 
         "Una cena 🤗",
         "Un deseo especial ✨",
         "Un día de suerte 🍀",
@@ -191,7 +191,7 @@ window.addEventListener('DOMContentLoaded', function() { //seguidores
             ctx.fillText(`Fecha: ${fechaStr}`, width - 80, height - 80);
             ctx.restore();
 
-            // Pie de página centrado (más arriba)
+            // Pie de página centrado
             ctx.save();
             ctx.font = "bold 28px Arial, sans-serif";
             ctx.textAlign = "center";
@@ -199,7 +199,7 @@ window.addEventListener('DOMContentLoaded', function() { //seguidores
             ctx.shadowColor = "#000";
             ctx.shadowBlur = 3;
             ctx.fillStyle = "#fff";
-            ctx.fillText("¡Feliz cumpleaños! 🎊", width / 2, height - 160); // antes: height - 100
+            ctx.fillText("¡Feliz cumpleaños! 🎊", width / 2, height - 160); 
             ctx.restore();
 
             // Compartir imagen
@@ -226,8 +226,7 @@ window.addEventListener('DOMContentLoaded', function() { //seguidores
             }, 'image/png');
         }
 
-        // Cambia el texto del botón
-        overlay.querySelector('#share-whatsapp span').textContent = "Reclama tu premio a esa persona";
+        overlay.querySelector('#share-whatsapp span').textContent = "Reclama tu premio a esa persona";//manzana
     }
 
     for (let i = 0; i < 6; i++) {
@@ -321,7 +320,7 @@ window.addEventListener('DOMContentLoaded', function() { //seguidores
             for (let j = 3; j < imageData.data.length; j += 4) {
                 if (imageData.data[j] === 0) transparent++;
             }
-            if (transparent > imageData.data.length / 10) { // ~40%
+            if (transparent > imageData.data.length / 10) { 
                 revealed = true;
                 terminado = true;
                 canvas.style.opacity = '0';
